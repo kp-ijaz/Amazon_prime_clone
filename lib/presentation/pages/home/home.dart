@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
         preferredSize: const Size.fromHeight(50),
         child: SafeArea(
           child: AppBarWidget(
+            goldencolour: false,
             isImage: true,
           ),
         ),
@@ -72,7 +73,10 @@ class _HomePageState extends State<HomePage> {
                           child: ErrorClass().errorLottie(),
                         );
                       } else if (snapshot.hasData) {
-                        return MovieContainer(snapshot: snapshot);
+                        return MovieContainer(
+                          snapshot: snapshot,
+                          isFromHome: true,
+                        );
                       } else {
                         return const Center(
                           child: CircularProgressIndicator(),
@@ -96,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                     } else if (snapshot.hasData) {
                       return MovieContainer(
                         snapshot: snapshot,
+                        isFromHome: true,
                       );
                     } else {
                       return const Center(
@@ -118,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else if (snapshot.hasData) {
                       return MovieContainerVertical(
+                        isFromHome: true,
                         snapshot: snapshot,
                       );
                     } else {
@@ -141,6 +147,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else if (snapshot.hasData) {
                       return MovieContainerVertical(
+                        isFromHome: true,
                         snapshot: snapshot,
                       );
                     } else {
@@ -165,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                     } else if (snapshot.hasData) {
                       return MovieContainer(
                         snapshot: snapshot,
+                        isFromHome: true,
                       );
                     } else {
                       return const Center(

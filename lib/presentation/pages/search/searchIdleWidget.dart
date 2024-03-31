@@ -1,12 +1,14 @@
 import 'package:amazonprime/api/search_api.dart';
+import 'package:amazonprime/models/movie.dart';
 import 'package:amazonprime/models/searchrespo/searchrespo.dart';
+import 'package:amazonprime/presentation/pages/details_page/details_page.dart';
 import 'package:flutter/material.dart';
 
 const imageurl =
     'https://media.themoviedb.org/t/p/w250_and_h141_face/en971MEXui9diirXlogOrPKmsEn.jpg';
 
 class SearchIdleWidget extends StatelessWidget {
-  const SearchIdleWidget({Key? key});
+  const SearchIdleWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class SearchIdleWidget extends StatelessWidget {
         ),
         Expanded(
           child: ValueListenableBuilder(
-            valueListenable: SearchApi().searchResultListNotifier,
+            valueListenable: SearchApi.instance.searchResultListNotifier,
             builder: (BuildContext context, List<SearchResultData> newList,
                 Widget? _) {
               return ListView.separated(
@@ -39,6 +41,8 @@ class SearchIdleWidget extends StatelessWidget {
                   return TopSearchItemTile(
                     backdropPath: data.backdropPath ?? '',
                     originalTitle: data.originalTitle ?? '',
+                    overview: data.overview,
+                    posterPath: data.posterPath,
                   );
                 },
                 separatorBuilder: (context, index) => const SizedBox(
@@ -57,43 +61,70 @@ class SearchIdleWidget extends StatelessWidget {
 class TopSearchItemTile extends StatelessWidget {
   final String backdropPath;
   final String originalTitle;
+  final String? overview;
+  final String? posterPath;
 
   const TopSearchItemTile({
     Key? key,
     required this.backdropPath,
     required this.originalTitle,
+    this.overview,
+    this.posterPath,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Row(
-      children: [
-        Container(
-          width: screenWidth * 0.35,
-          height: 90,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(backdropPath),
-              fit: BoxFit.cover,
+
+    final imageUrl = backdropPath.isNotEmpty
+        ? backdropPath
+        : 'https://via.placeholder.com/150';
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailsPage(
+              isFromHome: true,
+              movie: Movie(
+                movieName: originalTitle,
+                backdrop: backdropPath,
+                overview: overview,
+                poster: posterPath,
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 15,
-        ),
-        Expanded(
-          child: Text(
-            originalTitle,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        );
+      },
+      child: Row(
+        children: [
+          Container(
+            width: screenWidth * 0.35,
+            height: 90,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        const Icon(
-          Icons.play_circle_outline_rounded,
-          color: Colors.white,
-          size: 35,
-        )
-      ],
+          const SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: Text(
+              originalTitle,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
+          const Icon(
+            Icons.play_circle_outline_rounded,
+            color: Colors.white,
+            size: 35,
+          )
+        ],
+      ),
     );
   }
 }

@@ -11,6 +11,7 @@ class LiveTv extends StatelessWidget {
           preferredSize: const Size.fromHeight(50),
           child: SafeArea(
               child: AppBarWidget(
+            goldencolour: false,
             title: 'Live TV ',
             isImage: false,
           ))),

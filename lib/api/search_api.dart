@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:amazonprime/models/searchrespo/searchrespo.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,14 @@ class SearchApi {
         'https://api.themoviedb.org/3/search/multi?query=$keyword&include_adult=false&language=en-US&page=1&api_key=${Constants.apiKey}'));
 
     if (response.statusCode == 200) {
-      final data = await json.decode(response.body)['results'] as List;
-      searchResultListNotifier.value.clear();
-      searchResultListNotifier.value
-          .addAll(data.map((e) => SearchResultData.fromJson(e)).toList());
+      final data = json.decode(response.body)['results'] as List;
+      List<SearchResultData> results =
+          data.map((e) => SearchResultData.fromJson(e)).toList();
 
+      searchResultListNotifier.value = results;
       searchResultListNotifier.notifyListeners();
+    } else {
+      log('Failed to load search results');
     }
   }
 }

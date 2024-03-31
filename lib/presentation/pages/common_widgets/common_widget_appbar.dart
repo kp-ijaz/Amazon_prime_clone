@@ -1,12 +1,17 @@
+import 'package:amazonprime/core/colors/colors.dart';
 import 'package:amazonprime/core/colors/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
 class AppBarWidget extends StatelessWidget {
-  AppBarWidget({super.key, this.title, required this.isImage});
+  AppBarWidget(
+      {super.key,
+      this.title,
+      required this.isImage,
+      required this.goldencolour});
   final String? title;
   bool isImage = false;
+  bool goldencolour = false;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -20,8 +25,7 @@ class AppBarWidget extends StatelessWidget {
               )
             : Text(
                 title!,
-                style: GoogleFonts.geologica()
-                    .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+                style: goldencolour == true ? appbartextG : appbartextW,
               ),
         const Spacer(),
         const Icon(
@@ -34,7 +38,7 @@ class AppBarWidget extends StatelessWidget {
           Icons.account_circle,
           color: Colors.white,
           size: 40,
-        )
+        ),
       ],
     );
   }

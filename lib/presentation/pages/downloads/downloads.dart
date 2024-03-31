@@ -13,6 +13,7 @@ class Downloadpage extends StatelessWidget {
               child: AppBarWidget(
             title: 'Downloads',
             isImage: false,
+            goldencolour: false,
           ))),
       body: const Center(child: Text('Download page')),
     );
